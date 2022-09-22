@@ -6,7 +6,7 @@ trigger:
 parameters:
 - name: environment
   displayName: 'Host name'
-  type: sctring
+  type: string
 
 stages:
 - stage:
