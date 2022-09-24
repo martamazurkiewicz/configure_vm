@@ -29,21 +29,21 @@ stages:
               script: |
                 echo "##vso[task.setvariable variable=has_ansible]ansible --version"
                 echo "##vso[task.setvariable variable=has_pip]python3 -m pip -V"
-          - task: Bash@3
-            displayName: 'install pip'
-            inputs:
-              targetType: 'inline'
-              script: |
-                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-                python3 get-pip.py --user
-            condition: 
-          - task: Bash@3
-            displayName: 'install ansible'
-            inputs:
-              targetType: 'inline'
-              script: |
-                python3 -m pip install --user ansible
-                python3 -m pip install --upgrade --user ansible
-                ansible --version
-            condition: 
+          # - task: Bash@3
+          #   displayName: 'install pip'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+          #       python3 get-pip.py --user
+          #   condition: 
+          # - task: Bash@3
+          #   displayName: 'install ansible'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       python3 -m pip install --user ansible
+          #       python3 -m pip install --upgrade --user ansible
+          #       ansible --version
+          #   condition: 
 
