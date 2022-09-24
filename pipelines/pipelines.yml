@@ -48,11 +48,6 @@ stages:
           #   env:
           #     has_pip: $(HAS_PIP)
           #     has_ansible: $(HAS_ANSIBLE)
-          - task: Bash@3
-            displayName: 'check variables'
-            inputs:
-              targetType: 'inline'
-              script: echo $has_ansible
           # - task: Bash@3
           #   displayName: 'install pip'
           #   inputs:
