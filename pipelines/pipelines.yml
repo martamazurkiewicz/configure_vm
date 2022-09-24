@@ -28,9 +28,10 @@ stages:
               targetType: 'inline'
               script: |
                 ansible --version
-                echo ##vso[task.setvariable variable=has_ansible]$?
+                retval=$?
+                echo ##vso[task.setvariable variable=has_ansible]$retval
                 python3 -m pip -V
-                echo ##vso[task.setvariable variable=has_pip]$?"
+                echo ##vso[task.setvariable variable=has_pip]$?
           # - task: Bash@3
           #   displayName: 'check variables'
           #   inputs:
@@ -49,7 +50,7 @@ stages:
             displayName: 'check variables'
             inputs:
               targetType: 'inline'
-              script: echo $HAS_ANSIBLE
+              script: echo $has_ansible
           # - task: Bash@3
           #   displayName: 'install pip'
           #   inputs:
