@@ -49,7 +49,7 @@ stages:
             displayName: 'check variables'
             inputs:
               targetType: 'inline'
-              script: echo $(has_ansible)
+              script: echo $HAS_ANSIBLE
           # - task: Bash@3
           #   displayName: 'install pip'
           #   inputs:
