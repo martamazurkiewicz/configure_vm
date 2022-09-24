@@ -29,7 +29,8 @@ stages:
               script: |
                 ansible --version
                 retval=$?
-                echo ##vso[task.setvariable variable=hasansible;]$retval
+                echo $retval
+                echo "##vso[task.setvariable variable=hasansible;]$retval"
                 echo '$(HASANSIBLE)'
                 python3 -m pip -V
                 echo ##vso[task.setvariable variable=has_pip]$?
