@@ -22,66 +22,35 @@ stages:
       runOnce:
         deploy:
           steps:
-          # - task: Bash@3
-          #   displayName: 'check if ansible and python are installed'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       ansible --version
-          #       retval=$?
-          #       echo $retval
-          #       echo "##vso[task.setvariable variable=hasansible]$retval"
-          #       python3 -m pip -V
-          #       echo ##vso[task.setvariable variable=has_pip]$?
           - task: Bash@3
-            displayName: 'check if ansible and python are installed'
+            displayName: 'check if python is installed'
             inputs:
               targetType: 'inline'
               script: |
                 python3 -m pip -V
-          # - task: Bash@3
-          #   displayName: 'check vars'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       echo $(hasansible)
           - task: Bash@3
             displayName: 'install pip'
             inputs:
               targetType: 'inline'
               script: |
-                echo "This will be done"
+                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                python3 get-pip.py --user
             condition: failed()
-          
-          # - task: Bash@3
-          #   displayName: 'check variables'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       ansible --version
-          #       echo ##vso[task.setvariable variable=has_ansible]$?
-          #       echo $(HAS_ANSIBLE)
-          #       python3 -m pip -V
-          #       echo ##vso[task.setvariable variable=has_pip]$?"
-          #       echo $(HAS_PIP)  
-          #   env:
-          #     has_pip: $(HAS_PIP)
-          #     has_ansible: $(HAS_ANSIBLE)
-          # - task: Bash@3
-          #   displayName: 'install pip'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-          #       python3 get-pip.py --user
-          #   condition: 
-          # - task: Bash@3
-          #   displayName: 'install ansible'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       python3 -m pip install --user ansible
-          #       python3 -m pip install --upgrade --user ansible
-          #       ansible --version
-          #   condition: 
+            continueOnError: false
+          - task: Bash@3
+            displayName: 'check if ansible is installed'
+            inputs:
+              targetType: 'inline'
+              script: |
+                ansible --version
+          - task: Bash@3
+            displayName: 'install ansible'
+            inputs:
+              targetType: 'inline'
+              script: |
+                python3 -m pip install --user ansible
+                python3 -m pip install --upgrade --user ansible
+                ansible --version
+            condition: failed()
+            continueOnError: false
 
