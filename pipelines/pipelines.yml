@@ -30,10 +30,15 @@ stages:
                 ansible --version
                 retval=$?
                 echo $retval
-                echo "##vso[task.setvariable variable=hasansible;]$retval"
-                echo "$(hasansible)"
+                echo "##vso[task.setvariable variable=hasansible]$retval"
                 python3 -m pip -V
                 echo ##vso[task.setvariable variable=has_pip]$?
+          - task: Bash@3
+            displayName: 'check vars'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo $(hasansible)
           # - task: Bash@3
           #   displayName: 'check variables'
           #   inputs:
