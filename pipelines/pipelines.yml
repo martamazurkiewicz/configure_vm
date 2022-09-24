@@ -30,6 +30,7 @@ stages:
                 ansible --version
                 retval=$?
                 echo ##vso[task.setvariable variable=has_ansible]$retval
+                echo '$(HAS_ANSIBLE)'
                 python3 -m pip -V
                 echo ##vso[task.setvariable variable=has_pip]$?
           # - task: Bash@3
