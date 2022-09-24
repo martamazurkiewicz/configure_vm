@@ -34,6 +34,25 @@ stages:
                 echo ##vso[task.setvariable variable=has_pip]$?"
                 echo $(HAS_PIP)
           # - task: Bash@3
+          #   displayName: 'check variables'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       ansible --version
+          #       echo ##vso[task.setvariable variable=has_ansible]$?
+          #       echo $(HAS_ANSIBLE)
+          #       python3 -m pip -V
+          #       echo ##vso[task.setvariable variable=has_pip]$?"
+          #       echo $(HAS_PIP)  
+          #   env:
+          #     has_pip: $(HAS_PIP)
+          #     has_ansible: $(HAS_ANSIBLE)
+          - task: Bash@3
+            displayName: 'check variables'
+            inputs:
+              targetType: 'inline'
+              script: echo '$(has_ansible)'
+          # - task: Bash@3
           #   displayName: 'install pip'
           #   inputs:
           #     targetType: 'inline'
