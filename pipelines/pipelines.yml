@@ -49,6 +49,7 @@ stages:
               targetType: 'inline'
               script: |
                 python3 -m pip install --user ansible
+                export PATH=$PATH:/home/mmaz/.local/bin
                 python3 -m pip install --upgrade --user ansible
                 ansible --version
             condition: failed()
