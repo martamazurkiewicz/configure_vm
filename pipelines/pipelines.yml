@@ -7,7 +7,7 @@ parameters:
 - name: environment
   displayName: 'Host name'
   type: string
-  default: "tmp-ubuntu" 
+  default: "tmp-ubuntu.localdeploymenthost" 
 
 stages:
 - stage:
