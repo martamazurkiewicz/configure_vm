@@ -29,6 +29,8 @@ stages:
               script: |
                 echo "##vso[task.setvariable variable=has_ansible]ansible --version"
                 echo "##vso[task.setvariable variable=has_pip]python3 -m pip -V"
+                echo ansible --version
+                echo python3 -m pip -V
           # - task: Bash@3
           #   displayName: 'install pip'
           #   inputs:
