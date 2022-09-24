@@ -37,20 +37,20 @@ stages:
                 python3 get-pip.py --user
             condition: failed()
             continueOnError: false
-          # - task: Bash@3
-          #   displayName: 'check if ansible is installed'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       ansible --version
-          # - task: Bash@3
-          #   displayName: 'install ansible'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       python3 -m pip install --user ansible
-          #       python3 -m pip install --upgrade --user ansible
-          #       ansible --version
-          #   condition: failed()
-          #   continueOnError: false
+          - task: Bash@3
+            displayName: 'check if ansible is installed'
+            inputs:
+              targetType: 'inline'
+              script: |
+                ansible --version
+          - task: Bash@3
+            displayName: 'install ansible'
+            inputs:
+              targetType: 'inline'
+              script: |
+                python3 -m pip install --user ansible
+                python3 -m pip install --upgrade --user ansible
+                ansible --version
+            condition: failed()
+            continueOnError: false
 
