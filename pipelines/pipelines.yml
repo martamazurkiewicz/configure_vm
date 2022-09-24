@@ -38,11 +38,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                whoami 
                 python3 -m pip -V
-                retval=$?
-                echo $retval
-                echo "##vso[task.setvariable variable=has_pip]$retval"
           # - task: Bash@3
           #   displayName: 'check vars'
           #   inputs:
