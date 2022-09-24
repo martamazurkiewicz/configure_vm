@@ -22,23 +22,40 @@ stages:
       runOnce:
         deploy:
           steps:
+          # - task: Bash@3
+          #   displayName: 'check if ansible and python are installed'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       ansible --version
+          #       retval=$?
+          #       echo $retval
+          #       echo "##vso[task.setvariable variable=hasansible]$retval"
+          #       python3 -m pip -V
+          #       echo ##vso[task.setvariable variable=has_pip]$?
           - task: Bash@3
             displayName: 'check if ansible and python are installed'
             inputs:
               targetType: 'inline'
               script: |
-                ansible --version
+                python3 -m pip -V
                 retval=$?
                 echo $retval
-                echo "##vso[task.setvariable variable=hasansible]$retval"
-                python3 -m pip -V
-                echo ##vso[task.setvariable variable=has_pip]$?
+                echo "##vso[task.setvariable variablehas_pip]$retval"
+          # - task: Bash@3
+          #   displayName: 'check vars'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       echo $(hasansible)
           - task: Bash@3
-            displayName: 'check vars'
+            displayName: 'install pip'
             inputs:
               targetType: 'inline'
               script: |
-                echo $(hasansible)
+                echo "This will be done"
+            condition: failed()
+          
           # - task: Bash@3
           #   displayName: 'check variables'
           #   inputs:
