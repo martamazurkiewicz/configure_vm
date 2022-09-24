@@ -31,7 +31,7 @@ stages:
                 retval=$?
                 echo $retval
                 echo "##vso[task.setvariable variable=hasansible;]$retval"
-                echo '$(HASANSIBLE)'
+                echo "$(hasansible)"
                 python3 -m pip -V
                 echo ##vso[task.setvariable variable=has_pip]$?
           # - task: Bash@3
