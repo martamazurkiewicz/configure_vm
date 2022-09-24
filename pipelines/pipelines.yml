@@ -38,6 +38,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                echo $whoami 
                 python3 -m pip -V
                 retval=$?
                 echo $retval
