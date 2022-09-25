@@ -7,7 +7,7 @@ parameters:
 - name: environment
   displayName: 'Host name'
   type: string
-  default: "tmp-ubuntu.ansibleCN" 
+  default: "tmp-ubuntu." 
 
 stages:
 - stage:
@@ -57,8 +57,8 @@ stages:
                 sudo apt update
                 sudo apt install ansible
                 ansible --version
-              env:
-                ansible_pwd: $(ansible_pwd)
+            env:
+              ansible_pwd: $(ansible_pwd)
             condition: failed()
             continueOnError: false
           - task: Bash@3
