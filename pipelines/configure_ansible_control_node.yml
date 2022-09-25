@@ -1,1 +1,69 @@
+name: configure_ansible_control_node
 
+trigger:
+- none
+
+parameters:
+- name: environment
+  displayName: 'Host name'
+  type: string
+  default: "tmp-ubuntu.ansibleCN" 
+
+stages:
+- stage:
+  displayName: 'Configure control node'
+  pool:
+    name: Default
+  jobs:
+  - deployment: configure_vm
+    displayName: 'configure vm'
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: 'check if python is installed'
+            inputs:
+              targetType: 'inline'
+              script: |
+                python3 -m pip -V
+          - task: Bash@3
+            displayName: 'install pip'
+            inputs:
+              targetType: 'inline'
+              script: |
+                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                python3 get-pip.py --user
+            condition: failed()
+            continueOnError: false
+          - task: Bash@3
+            displayName: 'check if ansible is installed'
+            inputs:
+              targetType: 'inline'
+              script: |
+                ansible --version
+          - task: Bash@3
+            displayName: 'install ansible'
+            inputs:
+              targetType: 'inline'
+              script: |
+                sudo adduser ansible < $ansible_pwd
+                sudo usermod -aG sudo ansible
+                whoami
+                su - ansible < $ansible_pwd
+                whoami
+                ssh-keygen -q
+                sudo apt update
+                sudo apt install ansible
+                ansible --version
+              env:
+                ansible_pwd: $(ansible_pwd)
+            condition: failed()
+            continueOnError: false
+          - task: Bash@3
+            displayName: 'cat public ssh key'
+            inputs:
+              targetType: 'inline'
+              script: |
+                cat ~/.ssh/id_rsa.pub
