@@ -47,7 +47,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                printf "$user_pwd\n" | sudo -S useradd -m -p $ansible_pwd -s /bin/bash ansible
+                printf "$user_pwd\n" | sudo -S useradd -m -p "$ansible_pwd" -s /bin/bash ansible
                 printf "$user_pwd\n" | sudo -S usermod -aG sudo ansible
                 whoami
                 printf "$ansible_pwd\n" | su - ansible
