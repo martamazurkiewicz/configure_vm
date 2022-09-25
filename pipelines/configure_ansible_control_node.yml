@@ -48,19 +48,19 @@ stages:
               targetType: 'inline'
               script: |
                 echo "Adding ansible user"
-                printf "$user_pwd\n" | sudo -S useradd -m -p "$ansible_pwd" -s /bin/bash ansible
+                printf "$USER_PWD\n" | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
                 echo "Adding ansible user to admins"
-                printf "$user_pwd\n" | sudo -S usermod -aG sudo ansible
+                printf "$USER_PWD\n" | sudo -S usermod -aG sudo ansible
                 whoami
-                printf "$ansible_pwd\n" | su - ansible
+                printf "$ANSIBLE_PWD\n" | su - ansible
                 whoami
                 # ssh-keygen -q
                 # sudo apt update
                 # sudo apt install ansible
                 # ansible --version
             env:
-              ansible_pwd: $(ansible_pwd)
-              user_pwd: $(user_pwd)
+              ANSIBLE_PWD: $(ansible_pwd)
+              USER_PWD: $(user_pwd)
             condition: failed()
           - task: Bash@3
             displayName: 'cat public ssh key'
