@@ -47,7 +47,9 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                echo "Adding ansible user"
                 printf "$user_pwd\n" | sudo -S useradd -m -p "$ansible_pwd" -s /bin/bash ansible
+                echo "Adding ansible user to admins"
                 printf "$user_pwd\n" | sudo -S usermod -aG sudo ansible
                 whoami
                 printf "$ansible_pwd\n" | su - ansible
