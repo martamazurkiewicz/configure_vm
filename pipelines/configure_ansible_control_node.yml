@@ -47,7 +47,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                sudo adduser ansible < $ansible_pwd
+                $ansible_pwd | sudo adduser ansible
                 sudo usermod -aG sudo ansible
                 whoami
                 su - ansible < $ansible_pwd
