@@ -47,8 +47,8 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                printf "$ansible_pwd\n" | sudo -S adduser ansible
-                printf "$ansible_pwd\n" | sudo -S usermod -aG sudo ansible
+                printf "$user_pwd\n" | sudo -S useradd -m -p $ansible_pwd -s /bin/bash ansible
+                printf "$user_pwd\n" | sudo -S usermod -aG sudo ansible
                 whoami
                 printf "$ansible_pwd\n" | su - ansible
                 whoami
@@ -58,6 +58,7 @@ stages:
                 # ansible --version
             env:
               ansible_pwd: $(ansible_pwd)
+              user_pwd: $(user_pwd)
             condition: failed()
           - task: Bash@3
             displayName: 'cat public ssh key'
