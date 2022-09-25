@@ -53,10 +53,10 @@ stages:
                 whoami
                 su - ansible < $ansible_pwd
                 whoami
-                ssh-keygen -q
-                sudo apt update
-                sudo apt install ansible
-                ansible --version
+                # ssh-keygen -q
+                # sudo apt update
+                # sudo apt install ansible
+                # ansible --version
             env:
               ansible_pwd: $(ansible_pwd)
             condition: failed()
