@@ -73,5 +73,6 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                whoami
                 cat /home/ansible/.ssh/id_rsa.pub
             condition: always()
