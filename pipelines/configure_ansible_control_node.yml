@@ -59,8 +59,8 @@ stages:
                 cat /tmp/file2 | su - ansible
                 whoami
                 # ssh-keygen -q
-                # sudo apt update
-                # sudo apt install ansible
+                # cat /tmp/file2 | sudo -S apt update
+                # cat /tmp/file2 | sudo -S apt install ansible
                 # ansible --version
                 rm /tmp/file /tmp/file2
             env:
