@@ -1,0 +1,2 @@
+#!/bin/sh
+cat /home/$1/.ssh/id_rsa.pub
