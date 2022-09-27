@@ -53,7 +53,7 @@ stages:
                 cat /tmp/file | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
                 echo "Adding ansible user to admins"
                 cat /tmp/file | sudo -S usermod -aG sudo ansible
-                cat /tmp/file | sudo -S -u ansible ssh-keygen -q
+                cat /tmp/file | sudo -S -u ansible ssh-keygen -q -f /home/ansible/.ssh/id_rsa
                 cat /tmp/file | sudo -S -u ansible chmod 640 /home/ansible/.ssh/id_rsa.pub
                 # cat /tmp/file2 | sudo -S apt update
                 # cat /tmp/file2 | sudo -S apt install ansible
