@@ -51,15 +51,13 @@ stages:
               script: |
                 echo $USER_PWD > /tmp/file
                 echo $ANSIBLE_PWD > /tmp/fileA
-                cat /tmp/file | sudo -S groupadd azure
-                cat /tmp/file | sudo -S usermod -a -G azure $(whoami)
                 echo "Adding ansible user"
                 cat /tmp/file | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
-                echo "Adding ansible user to admins and azure group"
+                echo "Adding ansible user to admins and admin to ansible group"
                 cat /tmp/file | sudo -S usermod -aG sudo ansible
-                cat /tmp/file | sudo -S usermod -a -G azure ansible
+                cat /tmp/file | sudo -S usermod -a -G ansible $(whoami)
                 cat /tmp/file | sudo -S -u ansible ssh-keygen -q -f /home/ansible/.ssh/id_rsa
-                cat /tmp/file | sudo -S -u ansible chmod g+r /home/ansible/.ssh/
+                cat /tmp/file | sudo -S -u ansible chmod g+rx /home/ansible/.ssh/
                 cat /tmp/file | sudo -S -u ansible chmod 640 /home/ansible/.ssh/id_rsa.pub
                 echo "Install ansible"
                 cat /tmp/file | sudo -S -u ansible cat /tmp/fileA | sudo -S apt -y update
