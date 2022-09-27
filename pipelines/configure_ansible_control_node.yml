@@ -28,6 +28,7 @@ stages:
               targetType: 'inline'
               script: |
                 python3 -m pip -V
+            condition: always()
           - task: Bash@3
             displayName: 'install pip'
             inputs:
@@ -42,6 +43,7 @@ stages:
               targetType: 'inline'
               script: |
                 ansible --version
+            condition: always()
           - task: Bash@3
             displayName: 'install ansible'
             inputs:
@@ -69,3 +71,4 @@ stages:
               targetType: 'inline'
               script: |
                 cat /home/ansible/.ssh/id_rsa.pub
+            condition: always()
