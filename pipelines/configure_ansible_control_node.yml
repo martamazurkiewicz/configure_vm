@@ -52,8 +52,7 @@ stages:
                 echo $USER_PWD > /tmp/file
                 echo $ANSIBLE_PWD > /tmp/fileA
                 groupadd azure
-                curruser=$(whoami)
-                usermod -a -G azure curruser
+                usermod -a -G azure $(whoami)
                 echo "Adding ansible user"
                 cat /tmp/file | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
                 echo "Adding ansible user to admins and azure group"
