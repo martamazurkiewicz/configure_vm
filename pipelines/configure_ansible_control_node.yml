@@ -56,7 +56,9 @@ stages:
                 cat /tmp/file | sudo -S usermod -aG sudo ansible
                 cat /tmp/file | sudo -S -u ansible ssh-keygen -q -f /home/ansible/.ssh/id_rsa
                 cat /tmp/file | sudo -S -u ansible chmod 640 /home/ansible/.ssh/id_rsa.pub
+                echo "Update apt"
                 cat /tmp/file | sudo -S -u ansible apt update
+                echo "Install ansible"
                 cat /tmp/file | sudo -S -u ansible apt install ansible
                 cat /tmp/file | sudo -S -u ansible ansible --version
                 rm /tmp/file
