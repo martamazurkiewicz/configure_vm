@@ -52,7 +52,7 @@ stages:
                 chmod 660 /tmp/file
                 chmod 660 /tmp/file2
                 echo "Adding ansible user"
-                cat /tmp/file | sudo -S useradd -m -p $ANSIBLE_PWD -s /bin/bash ansible
+                cat /tmp/file | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
                 echo "Adding ansible user to admins"
                 cat /tmp/file | sudo -S usermod -aG sudo ansible
                 whoami
