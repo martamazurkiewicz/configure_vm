@@ -1,7 +1,7 @@
 # configure_vm
 ## Pipeline for generic vm configuration
 
-## Configuring ansible central node
+## Creating ansible central node
 pipeline: `configure_ansible_control_node.yml` </br>
 
 **Please do not use `"` in passwords. I have no idea how to escape them in passwords** </br>
