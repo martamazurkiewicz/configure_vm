@@ -19,17 +19,41 @@ stages:
   pool:
     name: Default
   jobs:
-  - deployment: configure_vm
+  - deployment: catKey
     displayName: 'configure vm'
-    environment: ${{ parameters.environment }}
+    environment: ${{ parameters.acn }}
     strategy:
       runOnce:
         deploy:
-          steps:
+          steps: 
           - task: Bash@3
             displayName: 'cat public ssh key'
             inputs:
               targetType: 'inline'
               script: |
-                cat /home/ansible/.ssh/id_rsa.pub
+                pubkey=$(cat /home/ansible/.ssh/id_rsa.pub)
+                echo "##vso[task.setvariable variable=pubkey;isoutput=true]${pubkey}"
+            name: catKey
+          - task: Bash@3
+            displayName: 'show public ssh key'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo $(catKey.pubkey)
+  - deployment: pushKey
+    dependsOn: catKey
+    variables:
+      pubkey: $[ dependencies.catKey.outputs['catKey.pubkey'] ]
+    displayName: 'save public key on host'
+    environment: ${{ parameters.host }}
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - task: Bash@3
+            displayName: 'cat public ssh key'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo $(pubkey)
            
