@@ -1,1 +1,35 @@
+name: connect_host_to_acn
 
+trigger:
+- none
+
+parameters:
+- name: acn
+  displayName: 'Ansible central node name'
+  type: string
+  default: "tmp-ubuntu.acn" 
+- name: host
+  displayName: 'Ansible host name'
+  type: string
+  default: "tmp-ubuntu.localdeploymenthost" 
+
+stages:
+- stage:
+  displayName: 'Read acn public ssh key'
+  pool:
+    name: Default
+  jobs:
+  - deployment: configure_vm
+    displayName: 'configure vm'
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: 'cat public ssh key'
+            inputs:
+              targetType: 'inline'
+              script: |
+                cat /home/ansible/.ssh/id_rsa.pub
+           
