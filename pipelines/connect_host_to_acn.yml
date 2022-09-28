@@ -14,12 +14,12 @@ parameters:
   default: "tmp-ubuntu.localdeploymenthost" 
 
 stages:
-- stage:
+- stage: pullKeyStage
   displayName: 'Read acn public ssh key'
   pool:
     name: Default
   jobs:
-  - deployment: pull_key_from_acn
+  - deployment: pullKey
     displayName: 'configure vm'
     environment: ${{ parameters.acn }}
     strategy:
@@ -33,17 +33,23 @@ stages:
               script: |
                 pubkey=$(cat /home/ansible/.ssh/id_rsa.pub)
                 echo "##vso[task.setvariable variable=pubkey;isoutput=true]${pubkey}"
-            name: catKey
+            name: pubKeyVar
           - task: Bash@3
             displayName: 'show public ssh key'
             inputs:
               targetType: 'inline'
               script: |
-                echo $(catKey.pubkey)
-  - deployment: push_key_to_host
-    dependsOn: pull_key_from_acn
+                echo $(pubKeyVar.pubkey)
+
+- stage: connectHostStage
+  displayName: 'Connect ansible host to ansible central node'
+  dependsOn: pullKey
+  pool:
+    name: Default
+  jobs:
+  - deployment: pushKey
     variables:
-      pubkey: $[ dependencies.pull_key_from_acn.outputs['catKey.pubkey'] ]
+      pubkey: $[ stageDependencies.pullKeyStage.pullKey.outputs['pubKeyVar.pubkey'] ]
     displayName: 'save public key on host'
     environment: ${{ parameters.host }}
     strategy:
