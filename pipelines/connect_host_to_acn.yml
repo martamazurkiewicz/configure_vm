@@ -57,6 +57,12 @@ stages:
         deploy:
           steps: 
           - task: Bash@3
+            displayName: 'Show variables'
+            inputs:
+              targetType: 'inline'
+              script: |
+                set
+          - task: Bash@3
             displayName: 'cat public ssh key'
             inputs:
               targetType: 'inline'
