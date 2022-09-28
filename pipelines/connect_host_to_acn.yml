@@ -39,6 +39,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                set | grep ssh
                 echo $(pubKeyVar.pubkey)
 - stage: connectHostStage
   displayName: 'Connect ansible host to ansible central node'
