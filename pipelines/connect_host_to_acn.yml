@@ -19,7 +19,7 @@ stages:
   pool:
     name: Default
   jobs:
-  - deployment: catKey
+  - deployment: pull_key_from_acn
     displayName: 'configure vm'
     environment: ${{ parameters.acn }}
     strategy:
@@ -40,10 +40,10 @@ stages:
               targetType: 'inline'
               script: |
                 echo $(catKey.pubkey)
-  - deployment: pushKey
-    dependsOn: catKey
+  - deployment: push_key_to_host
+    dependsOn: pull_key_from_acn
     variables:
-      pubkey: $[ dependencies.catKey.outputs['catKey.pubkey'] ]
+      pubkey: $[ dependencies.pull_key_from_acn.outputs['catKey.pubkey'] ]
     displayName: 'save public key on host'
     environment: ${{ parameters.host }}
     strategy:
