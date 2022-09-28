@@ -40,7 +40,6 @@ stages:
               targetType: 'inline'
               script: |
                 echo $(pubKeyVar.pubkey)
-
 - stage: connectHostStage
   displayName: 'Connect ansible host to ansible central node'
   dependsOn: pullKeyStage
@@ -49,7 +48,7 @@ stages:
   jobs:
   - deployment: pushKey
     variables:
-      acnpubkey: $[stageDependencies.pullKeyStage.pullKey.outputs['pubKeyVar.pubkey']]
+      acnpubkey: $[dependencies.pullKeyStage.outputs['pullKey.pubKeyVar.pubkey']]
     displayName: 'save public key on host'
     environment: ${{ parameters.host }}
     strategy:
