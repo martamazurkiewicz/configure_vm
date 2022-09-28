@@ -48,7 +48,7 @@ stages:
   jobs:
   - deployment: pushKey
     variables:
-      acnpubkey: $[dependencies.pullKeyStage.outputs['pullKey.pubKeyVar.pubkey']]
+      acnpubkey: $[stageDependencies.pullKey.outputs['pubKeyVar.pubkey']]
     displayName: 'save public key on host'
     environment: ${{ parameters.host }}
     strategy:
