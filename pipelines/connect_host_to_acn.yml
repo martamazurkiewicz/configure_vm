@@ -44,7 +44,6 @@ stages:
                 echo $(pubKeyVar.pubkey)
 - stage: connectHostStage
   displayName: 'Connect ansible host to ansible central node'
-  dependsOn: pullKeyStage
   pool:
     name: Default
   jobs:
