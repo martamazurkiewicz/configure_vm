@@ -34,12 +34,13 @@ stages:
                 pubkey=$(cat /home/ansible/.ssh/id_rsa.pub)
                 echo "##vso[task.setvariable variable=pubkey;isOutput=true]${pubkey}"
             name: pubKeyVar
+          - script: set
+            displayName: 'Show variables'
           - task: Bash@3
             displayName: 'show public ssh key'
             inputs:
               targetType: 'inline'
               script: |
-                set | grep ssh
                 echo $(pubKeyVar.pubkey)
 - stage: connectHostStage
   displayName: 'Connect ansible host to ansible central node'
