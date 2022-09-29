@@ -42,14 +42,14 @@ stages:
                 set | grep ssh
                 echo $(pubKeyVar.pubkey)
 - stage: connectHostStage
+  variables:
+    acnpubkey: $[stageDependencies.pullKeyStage.pullKey.outputs['pubKeyVar.pubkey']]
   displayName: 'Connect ansible host to ansible central node'
   dependsOn: pullKeyStage
   pool:
     name: Default
   jobs:
   - deployment: pushKey
-    variables:
-      acnpubkey: $[stageDependencies.pullKey.outputs['pubKeyVar.pubkey']]
     displayName: 'save public key on host'
     environment: ${{ parameters.host }}
     strategy:
