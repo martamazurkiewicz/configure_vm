@@ -74,6 +74,7 @@ stages:
               targetType: 'inline'
               script: |
                 cat /home/ansible/.ssh/id_rsa.pub
+                mkdir /tmp/artifacts
                 cp /home/ansible/.ssh/id_rsa.pub /tmp/artifacts/
             condition: always()
           - task: CopyFiles@2
