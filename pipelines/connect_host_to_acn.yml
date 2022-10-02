@@ -61,4 +61,19 @@ stages:
               targetType: 'inline'
               script: |
                 echo $(acnpubkey)
-           
+          - task: Bash@3
+            displayName: 'add key to known_hosts'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mkdir ~/.ssh
+                touch ~/.ssh/authorized_keys
+                chmod -R go= ~/.ssh
+                echo $(acnpubkey) >> ~/.ssh/authorized_keys
+                cat ~/.ssh/authorized_keys
+          - task: Bash@3
+            displayName: 'show host ip address'
+            inputs:
+              targetType: 'inline'
+              script: |
+                hostname -I | awk '{print $1}'
