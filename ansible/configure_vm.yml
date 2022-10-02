@@ -1,0 +1,6 @@
+  tasks:
+  - name: Ensure locate is installed and updated
+    yum:
+      name: mlocate
+      state: latest
+    become: yes
