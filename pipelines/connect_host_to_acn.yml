@@ -1,5 +1,7 @@
+#Pipeline for pushing ansible central node public key to ansible host (parameter)
 name: connect_host_to_acn
 
+#Artifacts from the pipeline resource get downloaded to $(PIPELINE.WORKSPACE)/<pipeline-identifier>/<artifact-identifier> folder.
 resources:
   pipelines:
   - pipeline: acnconfig
@@ -9,16 +11,22 @@ trigger:
 - none
 
 parameters:
-- name: acn
-  displayName: 'Ansible central node name'
-  type: string
-  default: "tmp-ubuntu.acn" 
 - name: host
   displayName: 'Ansible host name'
   type: string
   default: "tmp-ubuntu.localdeploymenthost" 
 
 stages:
+- stage: build
+  pool:
+    name: Default
+  jobs:
+  - job: build
+    steps:
+    - download: acnconfig
+      artifact:
+
+
 - stage: pullKeyStage
   displayName: 'Read acn public ssh key'
   pool:
