@@ -12,6 +12,12 @@ parameters:
     - local_test
     - local_containers
     - remote_test
+- name: playbook
+  displayName: 'Ansible playbook'
+  type: string
+  default: "configure_vm" 
+  values:
+    - configure_vm
 - name: acn
   displayName: 'Ansible cantral node name'
   type: string
@@ -43,6 +49,7 @@ stages:
                 SourceFolder: '$(Pipeline.Workspace)/repo/ansible'
                 Contents: '**'
                 TargetFolder: '/home/ansible'
+                CleanTargetFolder: true
               continueOnError: false
             - task: Bash@3
               displayName: 'add ansible hosts'
@@ -58,5 +65,12 @@ stages:
                 script: |
                   ansible-inventory --list -y
                   ansible all -m ping
+              continueOnError: false
+            - task: Bash@3
+              displayName: 'run playbook'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  ansible-playbook ${{ parameters.playbook }}.yaml
               continueOnError: false
 
