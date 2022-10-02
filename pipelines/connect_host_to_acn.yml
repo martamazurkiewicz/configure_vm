@@ -51,6 +51,7 @@ stages:
       runOnce:
         deploy:
           steps: 
+          - download: none
           - script: set
             displayName: 'Show variables'
           - task: Bash@3
