@@ -1,5 +1,10 @@
 name: connect_host_to_acn
 
+resources:
+  pipelines:
+  - pipeline: acnconfig
+    source: string
+
 trigger:
 - none
 
@@ -13,7 +18,8 @@ parameters:
   type: string
   default: "tmp-ubuntu.localdeploymenthost" 
 
-stages:
+
+
 - stage: pullKeyStage
   displayName: 'Read acn public ssh key'
   pool:
