@@ -33,7 +33,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          pubkey=$(ls -d $(PIPELINE.WORKSPACE)/acnconfig/publickey/* | cat )
+          file=$(ls -d PIPELINE.WORKSPACE)/acnconfig/publickey/*)
+          pubkey=$(cat $file)
           echo "##vso[task.setvariable variable=pubkey;isOutput=true]${pubkey}"
       name: pubKeyVar
 - stage: deploykey
