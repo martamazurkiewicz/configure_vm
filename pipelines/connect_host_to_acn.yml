@@ -69,7 +69,7 @@ stages:
                 mkdir ~/.ssh
                 touch ~/.ssh/authorized_keys
                 chmod -R go= ~/.ssh
-                echo $(acnpubkey) >> ~/.ssh/authorized_keys
+                echo $(acnpubkey) > ~/.ssh/authorized_keys
                 cat ~/.ssh/authorized_keys
           - task: Bash@3
             displayName: 'show host ip address'
