@@ -73,6 +73,20 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                whoami
                 cat /home/ansible/.ssh/id_rsa.pub
+                mkdir /tmp/artifacts
+                cp /home/ansible/.ssh/id_rsa.pub /tmp/artifacts/
             condition: always()
+          - task: CopyFiles@2
+            displayName: 'Copy public key to pipeline'
+            inputs:
+              SourceFolder: '/tmp/artifacts'
+              Contents: '**'
+              TargetFolder: '$(Pipeline.Workspace)'
+              CleanTargetFolder: true
+            condition: always()
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish public key as artifact'
+            inputs:
+              path: '$(Pipeline.Workspace)'
+              artifactName: publickey
