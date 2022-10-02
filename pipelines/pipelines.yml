@@ -7,9 +7,9 @@ parameters:
 - name: environment
   displayName: 'Ansible host section'
   type: string
-  default: "local_test" 
+  default: "test" 
   values:
-    - local_test
+    - test
     - local_containers
     - remote_test
 - name: playbook
@@ -56,7 +56,7 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  cp $(Pipeline.Workspace)/repo/${{ parameters.environment }} /etc/ansible/hosts
+                  cp $(Pipeline.Workspace)/repo/${{ parameters.environment }}_hosts /etc/ansible/hosts
               continueOnError: false
             - task: Bash@3
               displayName: 'check ansible inventory'
