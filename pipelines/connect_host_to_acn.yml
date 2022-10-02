@@ -1,6 +1,7 @@
 #Pipeline for pushing ansible central node public key to ansible host (parameter)
 name: connect_host_to_acn
 
+#Artifacts from the pipeline resource get downloaded to $(PIPELINE.WORKSPACE)/acnconfig/publickey folder.
 resources:
   pipelines:
   - pipeline: acnconfig
