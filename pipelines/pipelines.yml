@@ -71,6 +71,6 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  ansible-playbook ${{ parameters.playbook }}.yaml
+                  ansible-playbook /home/ansible/${{ parameters.playbook }}.yaml
               continueOnError: false
 
