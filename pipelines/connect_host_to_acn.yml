@@ -3,7 +3,7 @@ name: connect_host_to_acn
 resources:
   pipelines:
   - pipeline: acnconfig
-    source: string
+    source: configure_acn
 
 trigger:
 - none
