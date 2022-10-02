@@ -51,22 +51,21 @@ stages:
               targetType: 'inline'
               script: |
                 echo $USER_PWD > /tmp/file
-                echo $ANSIBLE_PWD > /tmp/fileA
                 echo "Adding ansible user"
-                cat /tmp/file | sudo -S useradd -m -p "$ANSIBLE_PWD" -s /bin/bash ansible
+                cat /tmp/file | sudo -S useradd -m -s /sbin/nologin ansible
                 echo "Adding ansible user to admins and admin to ansible group"
                 cat /tmp/file | sudo -S usermod -aG sudo ansible
+                cat /tmp/file | sudo -S echo "ansible ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
                 cat /tmp/file | sudo -S usermod -a -G ansible $(whoami)
                 cat /tmp/file | sudo -S -u ansible ssh-keygen -q -f /home/ansible/.ssh/id_rsa
                 cat /tmp/file | sudo -S -u ansible chmod go+rx /home/ansible/.ssh/
                 cat /tmp/file | sudo -S -u ansible chmod 644 /home/ansible/.ssh/id_rsa.pub
                 echo "Install ansible"
-                cat /tmp/file | sudo -S -u ansible cat /tmp/fileA | sudo -S apt -y update
-                cat /tmp/file | sudo -S -u ansible cat /tmp/fileA | sudo -S apt -y install ansible
-                rm /tmp/file /tmp/fileA
+                cat /tmp/file | sudo -S -u ansible apt -y update
+                cat /tmp/file | sudo -S -u ansible apt -y install ansible
+                rm /tmp/file
                 ansible --version
             env:
-              ANSIBLE_PWD: $(ansible_pwd)
               USER_PWD: $(user_pwd)
             condition: failed()
           - task: Bash@3
