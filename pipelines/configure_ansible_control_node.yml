@@ -1,4 +1,5 @@
-name: configure_ansible_control_node
+# Pipeline for configuring ansible central node and publishing public key as artifact
+name: configure_acn
 
 trigger:
 - none
