@@ -5,9 +5,21 @@ trigger:
 
 parameters:
 - name: environment
-  displayName: 'Host name'
+  displayName: 'Ansible host section'
   type: string
-  default: "tmp-ubuntu.localdeploymenthost" 
+  default: "local_test" 
+  values:
+    - local_test
+    - local_containers
+    - remote_test
+- name: acn
+  displayName: 'Ansible cantral node name'
+  type: string
+  default: "tmp-ubuntu.acn" 
+
+variables:
+- name: environment
+  value: ${{ parameters.environment }}
 
 stages:
 - stage:
@@ -17,42 +29,34 @@ stages:
   jobs:
   - deployment: configure_vm
     displayName: 'configure vm'
-    environment: ${{ parameters.environment }}
+    environment: ${{ parameters.acn }}
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: Bash@3
-            displayName: 'check if python is installed'
-            inputs:
-              targetType: 'inline'
-              script: |
-                python3 -m pip -V
-          - task: Bash@3
-            displayName: 'install pip'
-            inputs:
-              targetType: 'inline'
-              script: |
-                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-                python3 get-pip.py --user
-            condition: failed()
-            continueOnError: false
-          - task: Bash@3
-            displayName: 'check if ansible is installed'
-            inputs:
-              targetType: 'inline'
-              script: |
-                ansible --version
-          - task: Bash@3
-            displayName: 'install ansible'
-            inputs:
-              targetType: 'inline'
-              script: |
-                python3 -m pip install --user ansible
-                echo "export PATH=\$PATH:/home/mmaz/.local/bin" >> ~/.bashrc
-                echo "updating .bashrc"
-                source ~/.bashrc
-                ansible --version
-            condition: failed()
-            continueOnError: false
+            - checkout: self
+              clean: true
+              path: repo 
+              continueOnError: false
+            - task: CopyFiles@2
+              inputs:
+                SourceFolder: '$(Pipeline.Workspace)/repo/ansible'
+                Contents: '**'
+                TargetFolder: '/home/ansible'
+              continueOnError: false
+            - task: Bash@3
+              displayName: 'add ansible hosts'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  cp $(Pipeline.Workspace)/repo/${{ parameters.environment }} /etc/ansible/hosts
+              continueOnError: false
+            - task: Bash@3
+              displayName: 'check ansible inventory'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  ansible-inventory --list -y
+                  ansible all -m ping
+              continueOnError: false
 
