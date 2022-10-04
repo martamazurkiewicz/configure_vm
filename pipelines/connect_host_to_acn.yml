@@ -62,15 +62,32 @@ stages:
               script: |
                 echo $(acnpubkey)
           - task: Bash@3
+            displayName: 'add ansible user'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo $USER_PWD > /tmp/file
+                echo "Adding ansible user"
+                cat /tmp/file | sudo -S useradd -m -s /sbin/nologin ansible
+                echo "Adding ansible user to admins and admin to ansible group"
+                cat /tmp/file | sudo -S usermod -aG sudo ansible
+                cat /tmp/file | sudo -S echo "ansible ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+                rm /tmp/file
+            env:
+              USER_PWD: $(user_pwd)
+          - task: Bash@3
             displayName: 'add key to known_hosts'
             inputs:
               targetType: 'inline'
               script: |
-                mkdir ~/.ssh
-                touch ~/.ssh/authorized_keys
-                chmod -R go= ~/.ssh
-                echo $(acnpubkey) > ~/.ssh/authorized_keys
-                cat ~/.ssh/authorized_keys
+                echo $USER_PWD > /tmp/file
+                cat /tmp/file | sudo -S -u ansible mkdir ~/.ssh
+                cat /tmp/file | sudo -S -u ansible touch ~/.ssh/authorized_keys
+                cat /tmp/file | sudo -S -u ansible chmod -R go= ~/.ssh
+                cat /tmp/file | sudo -S -u ansible echo $(acnpubkey) > ~/.ssh/authorized_keys
+                cat /tmp/file | sudo -S -u ansible cat ~/.ssh/authorized_keys
+            env:
+              USER_PWD: $(user_pwd)
           - task: Bash@3
             displayName: 'show host ip address'
             inputs:
