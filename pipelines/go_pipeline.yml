@@ -1,0 +1,51 @@
+name: compile_go
+
+trigger:
+- none
+
+resources:
+  repositories:
+  - repository: aoc
+    type: github
+    endpoint: martamazurkiewicz
+    name: martamazurkiewicz/AdventOfCode
+    ref: main
+
+parameters:
+- name: task
+  displayName: 'AoC task'
+  type: string
+  default: "2022-01" 
+
+stages:
+- stage:
+  displayName: 'Build'
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs: build
+    steps:
+    - task: GoTool@0
+      #inputs:
+        #version: '1.13.5'
+    - task: Go@0
+      inputs:
+        command: 'get'
+        arguments: '-d'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+    - task: Go@0
+      inputs:
+        command: 'build'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+    - task: Bash@3
+      displayName: 'Check pipeline contents'
+      inputs:
+        targetType: 'inline'
+        script: |
+          ls -al $(PIPELINE.WORKSPACE)
+          ls -al $(System.DefaultWorkingDirectory)
+    - task: Bash@3
+      displayName: 'run task'
+      inputs:
+        targetType: 'inline'
+        script: |
+          #./script datafile
