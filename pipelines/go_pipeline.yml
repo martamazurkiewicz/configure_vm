@@ -12,7 +12,7 @@ resources:
     ref: main
 
 parameters:
-- name: task
+- name: aoctask
   displayName: 'AoC task'
   type: string
   default: "2022-01" 
@@ -24,6 +24,7 @@ stages:
     vmImage: 'ubuntu-latest'
   jobs: build
     steps:
+    - checkout: aoc
     - task: GoTool@0
       #inputs:
         #version: '1.13.5'
@@ -31,11 +32,11 @@ stages:
       inputs:
         command: 'get'
         arguments: '-d'
-        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/aoc/aoctask'
     - task: Go@0
       inputs:
         command: 'build'
-        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/aoc/aoctask'
     - task: Bash@3
       displayName: 'Check pipeline contents'
       inputs:
@@ -43,6 +44,7 @@ stages:
         script: |
           ls -al $(PIPELINE.WORKSPACE)
           ls -al $(System.DefaultWorkingDirectory)
+          ls -al $(System.DefaultWorkingDirectory)/aoc/aoctask
     - task: Bash@3
       displayName: 'run task'
       inputs:
