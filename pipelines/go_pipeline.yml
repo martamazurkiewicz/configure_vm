@@ -22,12 +22,13 @@ stages:
   displayName: 'Build'
   pool:
     vmImage: 'ubuntu-latest'
-  jobs: build
+  jobs: 
+  - job: build
     steps:
     - checkout: aoc
     - task: GoTool@0
-      #inputs:
-        #version: '1.13.5'
+    #inputs:
+      #version: '1.13.5'
     - task: Go@0
       inputs:
         command: 'get'
