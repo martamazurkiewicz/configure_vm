@@ -45,7 +45,7 @@ stages:
       displayName: 'go get'
       inputs:
         arguments: '-d'
-        workingDirectory: '/tmp'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/2022.1'
     - task: Go@0
       inputs:
         command: 'build'
