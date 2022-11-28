@@ -26,9 +26,17 @@ stages:
   - job: build
     steps:
     - checkout: aoc
+    - task: Bash@3
+      displayName: 'Check pipeline contents'
+      inputs:
+        targetType: 'inline'
+        script: |
+          ls -al $(PIPELINE.WORKSPACE)
+          ls -al $(System.DefaultWorkingDirectory)
+          ls -al $(System.DefaultWorkingDirectory)/aoc/aoctask
     - task: GoTool@0
-    #inputs:
-      #version: '1.13.5'
+      inputs:
+        version: '1.19.0'
     - task: Go@0
       inputs:
         command: 'get'
