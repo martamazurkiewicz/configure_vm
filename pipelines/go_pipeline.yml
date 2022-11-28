@@ -36,7 +36,7 @@ stages:
           ls -al $(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}
     - task: GoTool@0
       inputs:
-        version: '1.19.0'
+        version: '1.18.0'
     - task: Go@0
       inputs:
         command: 'get'
@@ -51,12 +51,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          ls -al $(PIPELINE.WORKSPACE)
-          ls -al $(System.DefaultWorkingDirectory)
-          ls -al $(System.DefaultWorkingDirectory)/aoc/aoctask
+          ls -al $(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}
     - task: Bash@3
       displayName: 'run task'
       inputs:
         targetType: 'inline'
         script: |
-          #./script datafile
+          #./main
