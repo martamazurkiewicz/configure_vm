@@ -45,7 +45,7 @@ stages:
       displayName: 'go get'
       inputs:
         arguments: '-d'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/$(aoctask)'
+        workingDirectory: '/tmp'
     - task: Go@0
       inputs:
         command: 'build'
