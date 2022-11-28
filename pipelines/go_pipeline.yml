@@ -17,6 +17,10 @@ parameters:
   type: string
   default: "2022-01" 
 
+variables:
+- name: aoctask
+  value: ${{ parameters.aoctask }}
+
 stages:
 - stage:
   displayName: 'Build'
@@ -33,20 +37,25 @@ stages:
         script: |
           ls -al $(System.DefaultWorkingDirectory)
           echo "===================="
-          ls -al $(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}
+          ls -al $(System.DefaultWorkingDirectory)/$(aoctask)
     - task: GoTool@0
       inputs:
         version: '1.17.4'
     - task: Go@0
+      displayName: 'go get'
+      inputs:
+        arguments: '-d'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/$(aoctask)'
+    - task: Go@0
       inputs:
         command: 'build'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/$(aoctask)'
     - task: Bash@3
       displayName: 'Check pipeline contents'
       inputs:
         targetType: 'inline'
         script: |
-          ls -al $(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}
+          ls -al $(System.DefaultWorkingDirectory)/$(aoctask)'
     - task: Bash@3
       displayName: 'run task'
       inputs:
