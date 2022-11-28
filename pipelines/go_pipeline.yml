@@ -50,12 +50,12 @@ stages:
       displayName: 'Go get'
       inputs:
         command: 'custom'
-        customCommand:  'get -d $(aoctask)/main.go'
+        customCommand:  'get -v $(System.DefaultWorkingDirectory)/$(aoctask)/main.go'
     - task: Go@0
       displayName: 'Go build'
       inputs:
         command: 'custom'
-        customCommand:  'build $(aoctask)/main.go'
+        customCommand:  'build $(System.DefaultWorkingDirectory)/$(aoctask)/main.go'
     - task: Bash@3
       displayName: 'Check pipeline contents'
       inputs:
