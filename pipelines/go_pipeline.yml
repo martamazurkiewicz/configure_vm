@@ -36,7 +36,7 @@ stages:
           ls -al $(System.DefaultWorkingDirectory)/${{ parameters.aoctask }}
     - task: GoTool@0
       inputs:
-        version: '1.18.0'
+        version: '1.17.4'
     - task: Go@0
       inputs:
         command: 'get'
