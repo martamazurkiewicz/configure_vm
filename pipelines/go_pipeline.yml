@@ -42,23 +42,28 @@ stages:
       inputs:
         version: '1.17.4'
     - task: Go@0
-      displayName: 'go get'
+      displayName: 'Go run'
       inputs:
-        arguments: '-d'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/2022.1'
-    - task: Go@0
-      inputs:
-        command: 'build'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/$(aoctask)'
-    - task: Bash@3
-      displayName: 'Check pipeline contents'
-      inputs:
-        targetType: 'inline'
-        script: |
-          ls -al $(System.DefaultWorkingDirectory)/$(aoctask)'
-    - task: Bash@3
-      displayName: 'run task'
-      inputs:
-        targetType: 'inline'
-        script: |
-          #./main
+        command: 'custom'
+        customCommand:  'run $(aoctask)/main.go'
+    # - task: Go@0
+    #   displayName: 'go get'
+    #   inputs:
+    #     arguments: '-d'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/2022.1'
+    # - task: Go@0
+    #   inputs:
+    #     command: 'build'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/$(aoctask)'
+    # - task: Bash@3
+    #   displayName: 'Check pipeline contents'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       ls -al $(System.DefaultWorkingDirectory)/$(aoctask)'
+    # - task: Bash@3
+    #   displayName: 'run task'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       #./main
