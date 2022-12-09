@@ -55,7 +55,7 @@ stages:
           - task: InstallSSHKey@0
             displayName: 'install ssh keys'
             inputs:
-              knownHostsEntry: ''
+              knownHostsEntry: '$(ansible_acn_ipv4)'
               sshPublicKey: $(ansible_pwd)
               sshPassphrase: $(ansible_phs)
               sshKeySecureFile: 
