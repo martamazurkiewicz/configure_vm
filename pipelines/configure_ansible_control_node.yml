@@ -56,6 +56,6 @@ stages:
             displayName: 'install ssh keys'
             inputs:
               knownHostsEntry: '$(ansible_acn_ipv4)'
-              sshPublicKey: $(ansible_pwd)
-              sshPassphrase: $(ansible_phs)
+              sshPublicKey: $(ansible_pubkey)
+              #sshPassphrase: $(ansible_phs)
               sshKeySecureFile: 'ansible_priv_key'
