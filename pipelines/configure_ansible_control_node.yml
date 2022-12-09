@@ -58,4 +58,4 @@ stages:
               knownHostsEntry: '$(ansible_acn_ipv4)'
               sshPublicKey: $(ansible_pwd)
               sshPassphrase: $(ansible_phs)
-              sshKeySecureFile: 
+              sshKeySecureFile: 'ansible_priv_key'
