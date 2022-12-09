@@ -51,6 +51,7 @@ stages:
               targetType: 'inline'
               script: |
                 python3 -m pip install --user ansible
+                ansible --version
             condition: failed()
           - task: InstallSSHKey@0
             displayName: 'install ssh keys'
