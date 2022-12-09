@@ -43,7 +43,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                ansible --version
+                . ~/.profile && ansible --version
             condition: always()
           - task: Bash@3
             displayName: 'install ansible'
@@ -51,7 +51,7 @@ stages:
               targetType: 'inline'
               script: |
                 python3 -m pip install --user ansible
-                ansible --version
+                . ~/.profile && ansible --version
             condition: failed()
           - task: InstallSSHKey@0
             displayName: 'install ssh keys'
