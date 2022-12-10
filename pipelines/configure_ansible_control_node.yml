@@ -71,7 +71,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                echo "$(caCertificate.secureFilePath)": $(caCertificate.secureFilePath)
-                mv $(caCertificate.secureFilePath) ~/.ssh/id_rsa
+                echo "$(ansibleprivkey.secureFilePath)": $(ansibleprivkey.secureFilePath)
+                mv $(ansibleprivkey.secureFilePath) ~/.ssh/id_rsa
                 chmod 600 ~/.ssh/id_rsa
             condition: always()
