@@ -53,10 +53,24 @@ stages:
                 python3 -m pip install --user ansible
                 . ~/.profile && ansible --version
             condition: failed()
-          - task: InstallSSHKey@0
-            displayName: 'install ssh keys'
+          # - task: InstallSSHKey@0
+          #   displayName: 'install ssh keys'
+          #   inputs:
+          #     knownHostsEntry: '$(ansible_acn_ipv4)'
+          #     sshPublicKey: $(ansible_pubkey)
+          #     #sshPassphrase: $(ansible_phs)
+          #     sshKeySecureFile: 'ansible_priv_key'
+          - task: DownloadSecureFile@1
+            name: ansibleprivkey
+            displayName: 'Download Ansible private key'
             inputs:
-              knownHostsEntry: '$(ansible_acn_ipv4)'
-              sshPublicKey: $(ansible_pubkey)
-              #sshPassphrase: $(ansible_phs)
-              sshKeySecureFile: 'ansible_priv_key'
+              secureFile: 'ansible_priv_key'
+            condition: always()
+          - task: Bash@3
+            displayName: 'copy Ansible private key'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mv $(caCertificate.secureFilePath) ~/.ssh/id_rsa
+                chmod 600 ~/.ssh/id_rsa
+            condition: always()
