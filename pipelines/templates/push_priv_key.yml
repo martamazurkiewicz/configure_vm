@@ -1,0 +1,12 @@
+steps:
+- task: DownloadSecureFile@1
+  name: privatekey
+  displayName: 'Download private ssh key'
+  inputs:
+    secureFile: 'ansible_default'
+- task: Bash@3
+  displayName: 'copy key to ~/.ssh'
+  inputs:
+    targetType: 'inline'
+    script: |
+      install -m 600 -D -t ~/.ssh "$(privatekey.secureFilePath)"

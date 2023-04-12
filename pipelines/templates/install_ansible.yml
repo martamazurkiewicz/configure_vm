@@ -1,0 +1,28 @@
+steps:
+  - task: Bash@3
+    displayName: 'check if python is installed'
+    inputs:
+      targetType: 'inline'
+      script: |
+        python3 -m pip -V
+    condition: always()
+  - task: Bash@3
+    displayName: 'install pip'
+    inputs:
+      targetType: 'inline'
+      script: |
+        curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+        python3 get-pip.py --user
+    condition: failed()
+  - task: Bash@3
+    displayName: 'check if ansible is installed'
+    inputs:
+      targetType: 'inline'
+      script: |
+        ansible --version
+    condition: always()
+  - task: Bash@3
+    displayName: 'install ansible'
+    inputs:
+      targetType: 'inline'
+    condition: failed()

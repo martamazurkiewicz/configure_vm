@@ -18,59 +18,69 @@ parameters:
   default: "configure_vm" 
   values:
     - configure_vm
-- name: acn
-  displayName: 'Ansible cantral node name'
-  type: string
-  default: "tmp-ubuntu.acn" 
-
-variables:
-- name: environment
-  value: ${{ parameters.environment }}
 
 stages:
 - stage:
-  displayName: 'Configure vm'
+  displayName: Run ansible
   pool:
-    name: Default
+    vmImage: 'ubuntu-latest'
   jobs:
-  - deployment: configure_vm
-    displayName: 'configure vm'
-    environment: ${{ parameters.acn }}
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - checkout: self
-              clean: true
-              path: repo 
-              continueOnError: false
-            - task: CopyFiles@2
-              inputs:
-                SourceFolder: '$(Pipeline.Workspace)/repo/ansible'
-                Contents: '**'
-                TargetFolder: '/home/ansible'
-                CleanTargetFolder: true
-              continueOnError: false
-            - task: Bash@3
-              displayName: 'add ansible hosts'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  cp $(Pipeline.Workspace)/repo/${{ parameters.environment }}_hosts /etc/ansible/hosts
-              continueOnError: false
-            - task: Bash@3
-              displayName: 'check ansible inventory'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  ansible-inventory --list -y
-                  ansible all -m ping
-              continueOnError: false
-            - task: Bash@3
-              displayName: 'run playbook'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  ansible-playbook /home/ansible/${{ parameters.playbook }}.yml
-              continueOnError: false
+  - job: install_ansible
+    displayName: Configure ACN
+    steps:
+      - template: templates/install_ansible.yml
+  - job: deploy_private_key
+    displayName: Push private key
+    steps:
+      - template: templates/push_priv_key.yml
+  - job: run
+    displayName: Run ansible
+    dependsOn:
+    - install_ansible
+    - deploy_private_key
+    steps:
+      - checkout: self
+        clean: true
+        path: repo 
+        
+  # - deployment: configure_vm
+  #   displayName: 'configure vm'
+  #   environment: ${{ parameters.environment }}
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #           - checkout: self
+  #             clean: true
+  #             path: repo 
+  #             continueOnError: false
+  #           - task: CopyFiles@2
+  #             inputs:
+  #               SourceFolder: '$(Pipeline.Workspace)/repo/ansible'
+  #               Contents: '**'
+  #               TargetFolder: '/home/ansible'
+  #               CleanTargetFolder: true
+  #             continueOnError: false
+  #           - task: Bash@3
+  #             displayName: 'add ansible hosts'
+  #             inputs:
+  #               targetType: 'inline'
+  #               script: |
+  #                 cp $(Pipeline.Workspace)/repo/${{ parameters.environment }}_hosts /etc/ansible/hosts
+  #             continueOnError: false
+  #           - task: Bash@3
+  #             displayName: 'check ansible inventory'
+  #             inputs:
+  #               targetType: 'inline'
+  #               script: |
+  #                 ansible-inventory --list -y
+  #                 ansible all -m ping
+  #             continueOnError: false
+  #           - task: Bash@3
+  #             displayName: 'run playbook'
+  #             inputs:
+  #               targetType: 'inline'
+  #               script: |
+  #                 ansible-playbook /home/ansible/${{ parameters.playbook }}.yml
+  #             continueOnError: false
 
