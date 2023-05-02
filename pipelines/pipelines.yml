@@ -25,10 +25,11 @@ stages:
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
-  - job: install_ansible
-    displayName: Configure ACN
-    steps:
-      - template: templates/install_ansible.yml
+  # On MS agent ansible is installed
+  # - job: install_ansible
+  #   displayName: Configure ACN
+  #   steps:
+  #     - template: templates/install_ansible.yml
   - job: deploy_private_key
     displayName: Push private key
     steps:
@@ -36,7 +37,7 @@ stages:
   - job: run
     displayName: Run ansible
     dependsOn:
-    - install_ansible
+    # - install_ansible
     - deploy_private_key
     steps:
       - checkout: self
@@ -46,7 +47,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ssh ansible@srv16.mikr.us -p 10234
+            ssh -tt ansible@srv16.mikr.us -p 10234
             show config
             exit
             cat ~/.ssh/known_hosts
