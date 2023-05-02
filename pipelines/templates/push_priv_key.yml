@@ -9,7 +9,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      cp "$(privatekey.secureFilePath)" ~/.ssh/id_rsa
+      mkdir ~/.ssh && cp "$(privatekey.secureFilePath)" ~/.ssh/id_rsa
       chmod 400 ~/.ssh/id_rsa
       #install -m 400 -D -t ~/.ssh "$(privatekey.secureFilePath)"
       ls -al ~/.ssh
