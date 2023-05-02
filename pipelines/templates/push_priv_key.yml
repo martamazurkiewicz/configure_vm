@@ -9,4 +9,5 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      install -m 600 -D -t ~/.ssh "$(privatekey.secureFilePath)"
+      install -m 400 -D -t ~/.ssh "$(privatekey.secureFilePath)"
+      ls ~/.ssh
