@@ -48,9 +48,9 @@ stages:
           targetType: 'inline'
           script: |
             ssh -tt ansible@srv16.mikr.us -p 10234
-            show config
-            exit
             cat ~/.ssh/known_hosts
+            exit
+            
         
   # - deployment: configure_vm
   #   displayName: 'configure vm'
