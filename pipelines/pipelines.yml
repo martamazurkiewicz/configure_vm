@@ -47,10 +47,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ssh -tt -o UserKnownHostsFile=/dev/null -p 10234 ansible@srv16.mikr.us 
-            whoami; hostname
-            exit
-            
+            ssh -tt -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
         
   # - deployment: configure_vm
   #   displayName: 'configure vm'
