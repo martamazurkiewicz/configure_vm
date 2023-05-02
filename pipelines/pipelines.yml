@@ -42,12 +42,12 @@ stages:
     steps:
       - checkout: self
         clean: true
-      # - task: Bash@3
-      #   displayName: 'Manuall connection'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i <private key filename> ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
+      - task: Bash@3
+        displayName: 'Manuall connection'
+        inputs:
+          targetType: 'inline'
+          script: |
+            ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ~/.ssh/ansible_default ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
         
   # - deployment: configure_vm
   #   displayName: 'configure vm'
