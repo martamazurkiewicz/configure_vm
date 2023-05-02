@@ -47,7 +47,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ~/.ssh/ansible_default ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
+            ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
         
   # - deployment: configure_vm
   #   displayName: 'configure vm'
