@@ -47,8 +47,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ssh -tt ansible@srv16.mikr.us -p 10234
-            cat ~/.ssh/known_hosts
+            ssh -tt -o UserKnownHostsFile=/dev/null -p 10234 ansible@srv16.mikr.us 
+            whoami; hostname
             exit
             
         
