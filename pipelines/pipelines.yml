@@ -41,7 +41,15 @@ stages:
     steps:
       - checkout: self
         clean: true
-        path: repo 
+      - task: Bash@3
+        displayName: 'Manuall connection'
+        inputs:
+          targetType: 'inline'
+          script: |
+            ssh ansible@srv16.mikr.us -p 10234
+            show config
+            exit
+            cat ~/.ssh/known_hosts
         
   # - deployment: configure_vm
   #   displayName: 'configure vm'
