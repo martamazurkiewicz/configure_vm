@@ -7,17 +7,20 @@ parameters:
 - name: environment
   displayName: 'Ansible host section'
   type: string
-  default: "test" 
+  default: "non_disruptive" 
   values:
-    - test
-    - local_containers
-    - remote_test
+    - non_disruptive
 - name: playbook
   displayName: 'Ansible playbook'
   type: string
   default: "configure_vm" 
   values:
     - configure_vm
+- name: dry_run
+  displayName: Dry run
+  type: boolean
+  default: false
+
 
 stages:
 - stage:
@@ -25,71 +28,52 @@ stages:
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
-  # On MS agent ansible is installed
-  # - job: install_ansible
-  #   displayName: Configure ACN
-  #   steps:
-  #     - template: templates/install_ansible.yml
-  # - job: deploy_private_key
-  #   displayName: Push private key
-  #   steps:
-  #     - template: templates/push_priv_key.yml
-  - job: run
-    displayName: Run ansible
+  - job: dry_run
+    displayName: Dry run ansible
+    condition: eq(${{ parameters.dry_run }}, true))
     dependsOn: []
-    # - install_ansible
-    #  - deploy_private_key
     steps:
-      - checkout: self
-        clean: true
+      # On MS agent ansible is installed
+      # - template: templates/install_ansible.yml
       - template: templates/push_priv_key.yml
       - task: Bash@3
         displayName: 'Manuall connection'
         inputs:
           targetType: 'inline'
           script: |
-            ls -al ~/.ssh
-            ssh -v -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"
-            #ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
-        
-  # - deployment: configure_vm
-  #   displayName: 'configure vm'
-  #   environment: ${{ parameters.environment }}
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #           - checkout: self
-  #             clean: true
-  #             path: repo 
-  #             continueOnError: false
-  #           - task: CopyFiles@2
-  #             inputs:
-  #               SourceFolder: '$(Pipeline.Workspace)/repo/ansible'
-  #               Contents: '**'
-  #               TargetFolder: '/home/ansible'
-  #               CleanTargetFolder: true
-  #             continueOnError: false
-  #           - task: Bash@3
-  #             displayName: 'add ansible hosts'
-  #             inputs:
-  #               targetType: 'inline'
-  #               script: |
-  #                 cp $(Pipeline.Workspace)/repo/${{ parameters.environment }}_hosts /etc/ansible/hosts
-  #             continueOnError: false
-  #           - task: Bash@3
-  #             displayName: 'check ansible inventory'
-  #             inputs:
-  #               targetType: 'inline'
-  #               script: |
-  #                 ansible-inventory --list -y
-  #                 ansible all -m ping
-  #             continueOnError: false
-  #           - task: Bash@3
-  #             displayName: 'run playbook'
-  #             inputs:
-  #               targetType: 'inline'
-  #               script: |
-  #                 ansible-playbook /home/ansible/${{ parameters.playbook }}.yml
-  #             continueOnError: false
+            ssh -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"
+  - deployment: run
+    displayName: Run ansible
+    dependsOn: []
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+              clean: true
+              path: repo
+            - task: Bash@3
+              displayName: Prepare ansible
+              inputs:
+                targetType: 'inline'
+                script: |
+                  cp $(Pipeline.Workspace)/repo/ansible/ansible.cfg /etc/ansible/ansible.cfg
+                  cp $(Pipeline.Workspace)/repo/ansible/inventory/hosts /etc/ansible/hosts
+              continueOnError: false
+            - task: Bash@3
+              displayName: 'check ansible inventory'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  ansible-inventory --list -y
+                  ansible all -m ping
+#             continueOnError: false
+#           - task: Bash@3
+#             displayName: 'run playbook'
+#             inputs:
+#               targetType: 'inline'
+#               script: |
+#                 ansible-playbook /home/ansible/${{ parameters.playbook }}.yml
+#             continueOnError: false
 
