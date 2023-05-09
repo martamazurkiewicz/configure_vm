@@ -30,7 +30,7 @@ stages:
   jobs:
   - job: dry_run
     displayName: Dry run ansible
-    condition: eq(${{ parameters.dry_run }}, true))
+    condition: eq(${{ parameters.dry_run }}, true)
     dependsOn: []
     steps:
       # On MS agent ansible is installed
