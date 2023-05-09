@@ -30,18 +30,19 @@ stages:
   #   displayName: Configure ACN
   #   steps:
   #     - template: templates/install_ansible.yml
-  - job: deploy_private_key
-    displayName: Push private key
-    steps:
-      - template: templates/push_priv_key.yml
+  # - job: deploy_private_key
+  #   displayName: Push private key
+  #   steps:
+  #     - template: templates/push_priv_key.yml
   - job: run
     displayName: Run ansible
-    dependsOn:
+    dependsOn: []
     # - install_ansible
-      - deploy_private_key
+    #  - deploy_private_key
     steps:
       - checkout: self
         clean: true
+      - template: templates/push_priv_key.yml
       - task: Bash@3
         displayName: 'Manuall connection'
         inputs:
