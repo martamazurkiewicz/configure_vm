@@ -38,7 +38,7 @@ stages:
     displayName: Run ansible
     dependsOn:
     # - install_ansible
-    - deploy_private_key
+      - deploy_private_key
     steps:
       - checkout: self
         clean: true
