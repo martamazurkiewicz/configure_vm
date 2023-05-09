@@ -49,7 +49,7 @@ stages:
           targetType: 'inline'
           script: |
             ls -al ~/.ssh
-            ssh -v -i ~/.ssh/id_rsa ansible@srv16.mikr.us -p 10234 "whoami; hostname"
+            ssh -v -i ~/.ssh/id_rsa o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"
             #ssh -tt -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"         
         
   # - deployment: configure_vm
