@@ -35,39 +35,45 @@ stages:
     steps:
       # On MS agent ansible is installed
       # - template: templates/install_ansible.yml
-      - template: templates/push_priv_key.yml
-      - task: Bash@3
-        displayName: 'Manuall connection'
-        inputs:
-          targetType: 'inline'
-          script: |
-            ssh -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"
-  - deployment: run
-    displayName: Run ansible
-    dependsOn: []
-    environment: ${{ parameters.environment }}
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - checkout: self
-              clean: true
-              path: repo
-            - task: Bash@3
-              displayName: Prepare ansible
-              inputs:
-                targetType: 'inline'
-                script: |
-                  cp $(Pipeline.Workspace)/repo/ansible/ansible.cfg /etc/ansible/ansible.cfg
-                  cp $(Pipeline.Workspace)/repo/ansible/inventory/hosts /etc/ansible/hosts
-              continueOnError: false
-            - task: Bash@3
-              displayName: 'check ansible inventory'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  ansible-inventory --list -y
-                  ansible all -m ping
+      ## comment #1
+      #- template: templates/push_priv_key.yml
+      # - task: Bash@3
+      #   displayName: 'Manuall connection'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       ssh -o "StrictHostKeyChecking=no" ansible@srv16.mikr.us -p 10234 "whoami; hostname"
+      ## /comment #1
+  ## comment #2
+  # - deployment: run
+  #   displayName: Run ansible
+  #   dependsOn: []
+  #   environment: ${{ parameters.environment }}
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #           - checkout: self
+  #             clean: true
+  #             path: repo
+  #           - task: Bash@3
+  #             displayName: Prepare ansible
+  #             inputs:
+  #               targetType: 'inline'
+  #               script: |
+  #                 cp $(Pipeline.Workspace)/repo/ansible/ansible.cfg /etc/ansible/ansible.cfg
+  #                 cp $(Pipeline.Workspace)/repo/ansible/inventory/hosts /etc/ansible/hosts
+  #             continueOnError: false
+  #           - task: Bash@3
+  #             displayName: 'check ansible inventory'
+  #             inputs:
+  #               targetType: 'inline'
+  #               script: |
+  #                 ansible-inventory --list -y
+  #                 ansible all -m ping
+  ## /comment #2
+
+#NOT RUN YET
 #             continueOnError: false
 #           - task: Bash@3
 #             displayName: 'run playbook'
