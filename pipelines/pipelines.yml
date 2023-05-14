@@ -33,6 +33,13 @@ stages:
     condition: eq(${{ parameters.dry_run }}, true)
     dependsOn: []
     steps:
+      - checkout: self
+        clean: true
+        path: repo
+      - task: PythonScript@0
+        inputs:
+          scriptSource: 'filePath'
+          scriptPath: 'cp $(Pipeline.Workspace)/repo/is_master_ahead.py'
       # On MS agent ansible is installed
       # - template: templates/install_ansible.yml
       ## comment #1
