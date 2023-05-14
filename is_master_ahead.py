@@ -14,8 +14,7 @@ print(repo)
 #branch = os.environ['SYSTEM_PULLREQUEST_SOURCEBRANCH']
 branch = os.environ['BUILD_SOURCEBRANCH']
 print(branch)
-token = os.environ['SYSTEM_ACCESSTOKEN']
-print(token)
+token = os.environ['SYSTEM_ENABLEACCESSTOKEN']
 headers = {"Authorization": "Bearer " + token}
 print(headers)
 commit_url = organization + project  + "/_apis/git/repositories/" + repo + "/commits?searchCriteria.itemVersion.version=master"
