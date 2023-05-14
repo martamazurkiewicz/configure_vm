@@ -39,7 +39,7 @@ stages:
       - task: PythonScript@0
         inputs:
           scriptSource: 'filePath'
-          scriptPath: 'cp $(Pipeline.Workspace)/repo/is_master_ahead.py'
+          scriptPath: '$(Pipeline.Workspace)/repo/is_master_ahead.py'
       # On MS agent ansible is installed
       # - template: templates/install_ansible.yml
       ## comment #1
